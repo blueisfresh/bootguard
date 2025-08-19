@@ -7,7 +7,7 @@
 
     <changeSet id="4" author="elias">
         <createTable tableName="refresh_tokens">
-            <column name="id" type="BIGINT" autoIncrement="true">
+            <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="token" type="VARCHAR(255)">
@@ -16,7 +16,7 @@
             <column name="expiry_date" type="TIMESTAMP">
                 <constraints nullable="false"/>
             </column>
-            <column name="user_id" type="BIGINT">
+            <column name="user_id" type="UUID">
                 <constraints nullable="false"/>
             </column>
         </createTable>

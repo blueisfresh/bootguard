@@ -8,7 +8,7 @@
     <!-- Create roles table -->
     <changeSet id="1" author="elias">
         <createTable tableName="roles">
-            <column name="id" type="BIGINT" autoIncrement="true">
+            <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(50)">
@@ -20,7 +20,7 @@
     <!-- Create users table -->
     <changeSet id="2" author="elias">
         <createTable tableName="users">
-            <column name="id" type="BIGINT" autoIncrement="true">
+            <column name="id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="username" type="VARCHAR(100)">
@@ -40,10 +40,10 @@
     <!-- Create user_roles join table -->
     <changeSet id="3" author="elias">
         <createTable tableName="user_roles">
-            <column name="user_id" type="BIGINT">
+            <column name="user_id" type="UUID">
                 <constraints nullable="false"/>
             </column>
-            <column name="role_id" type="BIGINT">
+            <column name="role_id" type="UUID">
                 <constraints nullable="false"/>
             </column>
         </createTable>
