@@ -7,8 +7,8 @@
 
     <!-- Create roles table -->
     <changeSet id="1" author="elias">
-        <createTable tableName="roles">
-            <column name="id" type="UUID">
+        <createTable tableName="tbl_role">
+            <column name="role_id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(50)">
@@ -19,21 +19,29 @@
 
     <!-- Create users table -->
     <changeSet id="2" author="elias">
-        <createTable tableName="users">
-            <column name="id" type="UUID">
+        <createTable tableName="tbl_user">
+            <column name="user_id" type="UUID">
                 <constraints primaryKey="true" nullable="false"/>
             </column>
-            <column name="username" type="VARCHAR(100)">
+            <column name="username" type="VARCHAR(64)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="email" type="VARCHAR(150)">
+            <column name="email" type="VARCHAR(255)">
                 <constraints nullable="false" unique="true"/>
             </column>
-            <column name="password" type="VARCHAR(255)">
+            <column name="password_hash" type="VARCHAR(255)">
                 <constraints nullable="false"/>
             </column>
-            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP"/>
-            <column name="updated_at" type="TIMESTAMP"/>
+            <column name="display_name" type="VARCHAR(100)">
+                <constraints nullable="false" unique="true"/>
+            </column>
+            <column name="description" type="TEXT"/>
+            <column name="created_at" type="TIMESTAMP" defaultValueComputed="CURRENT_TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
+            <column name="updated_at" type="TIMESTAMP">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 
@@ -50,10 +58,10 @@
 
         <addPrimaryKey tableName="user_roles" columnNames="user_id, role_id" constraintName="pk_user_roles"/>
         <addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="user_id"
-                                 referencedTableName="users" referencedColumnNames="id"
+                                 referencedTableName="tbl_user" referencedColumnNames="user_id"
                                  constraintName="fk_user_roles_user"/>
         <addForeignKeyConstraint baseTableName="user_roles" baseColumnNames="role_id"
-                                 referencedTableName="roles" referencedColumnNames="id"
+                                 referencedTableName="tbl_role" referencedColumnNames="role_id"
                                  constraintName="fk_user_roles_role"/>
     </changeSet>
 

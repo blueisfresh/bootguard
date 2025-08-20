@@ -8,6 +8,8 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Entity
@@ -27,4 +29,7 @@ public class Role {
     @Enumerated(EnumType.STRING)
     @Column(name = "name", nullable = false, unique = true, length = 50)
     private RoleName name;
+
+    @ManyToMany(mappedBy = "roles")
+    private List<User> users = new ArrayList<>();
 }

@@ -22,7 +22,7 @@
         </createTable>
 
         <addForeignKeyConstraint baseTableName="refresh_tokens" baseColumnNames="user_id"
-                                 referencedTableName="users" referencedColumnNames="id"
+                                 referencedTableName="tbl_user" referencedColumnNames="user_id"
                                  constraintName="fk_refresh_token_user"/>
     </changeSet>
 
