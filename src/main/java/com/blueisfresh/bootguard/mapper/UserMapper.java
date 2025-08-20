@@ -20,6 +20,10 @@ public interface UserMapper {
     UserDto toDto(User user);
 
     // UserDto -> User
+    @Mapping(target = "passwordHash", ignore = true)
+    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "updatedAt", ignore = true)
+    @Mapping(target = "refreshTokens", ignore = true)
     @Mapping(target = "roles", expression = "java(mapStringsToRoles(dto.getRoles()))")
     User toEntity(UserDto dto);
 
