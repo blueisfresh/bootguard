@@ -4,14 +4,15 @@ https://central.sonatype.com/artifact/org.xerial/sqlite-jdbc
 Jwt Secret is all configurated in the normal application.properties
 - always set the jwt key before a project!!!
 
+```mermaid
 sequenceDiagram
-participant C as Client
-participant AC as AuthController
-participant AS as AuthService
-participant UR as UserRepository
-participant JP as JwtTokenProvider
-participant RT as RefreshTokenService
-participant DB as Database
+    participant C as Client
+    participant AC as AuthController
+    participant AS as AuthService
+    participant UR as UserRepository
+    participant JP as JwtTokenProvider
+    participant RT as RefreshTokenService
+    participant DB as Database
 
     C->>AC: POST /auth/signin (username, password)
     AC->>AS: authenticate user
@@ -42,3 +43,4 @@ participant DB as Database
     DB-->>RT: valid
     RT->>JP: generate new access token
     AC-->>C: { newAccessToken, refreshToken }
+```
