@@ -28,8 +28,6 @@
     </scm>
     <properties>
         <java.version>17</java.version>
-        <!-- Property for springdoc.version -->
-        <springdoc.version>2.5.0</springdoc.version>
     </properties>
     <dependencies>
         <!-- Core Spring Boot Starters -->
@@ -87,14 +85,6 @@
             <artifactId>hibernate-community-dialects</artifactId>
         </dependency>
 
-        <!--Swagger dependency-->
-        <dependency>
-            <groupId>org.springdoc</groupId>
-            <artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
-            <!-- reference to <version> tag -->
-            <version>${springdoc.version}</version>
-        </dependency>
-
         <!--PostgreSql dependency-->
         <dependency>
             <groupId>org.postgresql</groupId>
@@ -127,6 +117,12 @@
             <artifactId>mapstruct</artifactId>
             <version>1.6.3</version>
         </dependency>
+        <dependency>
+            <groupId>org.mapstruct</groupId>
+            <artifactId>mapstruct-processor</artifactId>
+            <version>1.6.3</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -155,5 +151,3 @@
         </plugins>
     </build>
 </project>
-
-<!--TODO: Rest Doc Dependency-->
