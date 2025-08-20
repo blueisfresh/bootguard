@@ -1,6 +1,7 @@
 package com.blueisfresh.bootguard.controller;
 
 import com.blueisfresh.bootguard.dto.UserDto;
+import com.blueisfresh.bootguard.dto.response.ApiResponse;
 import com.blueisfresh.bootguard.service.UserService;
 import com.blueisfresh.bootguard.util.AuthUtils;
 import jakarta.validation.Valid;
@@ -17,18 +18,44 @@ public class UserController {
     private final AuthUtils authUtils;
 
     @GetMapping("/me")
-    public ResponseEntity<UserDto> getCurrentUser() {
+    public ResponseEntity<ApiResponse<UserDto>> getCurrentUser() {
+
+        // Current Userinformation Search
         String username = authUtils.getCurrentUsername();
-        return ResponseEntity.ok(userService.getUserByUsername(username));
+        UserDto userInformation = userService.getUserByUsername(username);
+
+        // Wrap into Api Response
+        return ResponseEntity.ok(ApiResponse.<UserDto>builder()
+                .success(true)
+                .data(userInformation)
+                .message("Getting your Current User Information was a success")
+                .build());
     }
 
     @GetMapping("/{username}")
-    public ResponseEntity<UserDto> getUserByUsername(@PathVariable String username) {
-        return ResponseEntity.ok(userService.getUserByUsername(username));
+    public ResponseEntity<ApiResponse<UserDto>> getUserByUsername(@PathVariable String username) {
+
+        // Search for User
+        UserDto foundUser = userService.getUserByUsername(username);
+
+        // Wrap into Api Response
+        return ResponseEntity.ok(ApiResponse.<UserDto>builder()
+                .success(true)
+                .data(foundUser)
+                .message("User Found!")
+                .build());
     }
 
     @PutMapping("/update")
-    public ResponseEntity<UserDto> updateUser(@Valid @RequestBody UserDto request) {
-        return ResponseEntity.ok(userService.updateCurrentUser(request));
+    public ResponseEntity<ApiResponse<UserDto>> updateUser(@Valid @RequestBody UserDto request) {
+
+        // Update Current User
+        UserDto updatedUser = userService.updateCurrentUser(request);
+
+        return ResponseEntity.ok(ApiResponse.<UserDto>builder()
+                .success(true)
+                .data(updatedUser)
+                .message("User successfully updated!")
+                .build());
     }
 }

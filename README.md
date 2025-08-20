@@ -3,6 +3,7 @@ If using Dev Mode then you can delete the whole ressources.db folder
 https://central.sonatype.com/artifact/org.xerial/sqlite-jdbc
 Jwt Secret is all configurated in the normal application.properties
 - always set the jwt key before a project!!!
+pack controller response into the api response dto
 
 ```mermaid
 sequenceDiagram
@@ -44,3 +45,7 @@ sequenceDiagram
     RT->>JP: generate new access token
     AC-->>C: { newAccessToken, refreshToken }
 ```
+
+todo:
+cors config
+global exception handler with custom exceptions

@@ -3,6 +3,7 @@ package com.blueisfresh.bootguard.controller;
 import com.blueisfresh.bootguard.dto.UserDto;
 import com.blueisfresh.bootguard.dto.request.SigninRequest;
 import com.blueisfresh.bootguard.dto.request.SignupRequest;
+import com.blueisfresh.bootguard.dto.response.ApiResponse;
 import com.blueisfresh.bootguard.dto.response.SigninResponse;
 import com.blueisfresh.bootguard.dto.response.SignupResponse;
 import com.blueisfresh.bootguard.security.JwtTokenProvider;
@@ -31,46 +32,87 @@ public class AuthController {
     private final RefreshTokenService refreshTokenService;
 
     @PostMapping("/signup")
-    public ResponseEntity<SignupResponse> signup(@Valid @RequestBody SignupRequest request) {
+    public ResponseEntity<ApiResponse<SignupResponse>> signup(@Valid @RequestBody SignupRequest request) {
+
         UserDto user = userService.registerUser(request);
 
-        // builds Response Dto
-        SignupResponse response = SignupResponse.builder().message("User registered successfully").userId(user.getId()).username(user.getUsername()).build();
+        // Build Signup Response
+        SignupResponse response = SignupResponse.builder()
+                .userId(user.getId())
+                .username(user.getUsername())
+                .build();
 
-        return ResponseEntity.ok(response);
+        // Wrap in ApiResponse
+        return ResponseEntity.ok(
+                ApiResponse.<SignupResponse>builder()
+                        .success(true)
+                        .message("User registered successfully")
+                        .data(response)
+                        .build()
+        );
     }
 
     @PostMapping("/signin")
-    public ResponseEntity<SigninResponse> signin(@Valid @RequestBody SigninRequest request) {
+    public ResponseEntity<ApiResponse<SigninResponse>> signin(@Valid @RequestBody SigninRequest request) {
 
-        // Authenticate the user with username/password and store the result in the Spring Security
-        Authentication authentication = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
+        // Authenticate the user with username/password
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword())
+        );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
+        // Generate tokens
         String accessToken = jwtTokenProvider.generateAccessToken(request.getUsername());
         String refreshToken = jwtTokenProvider.generateRefreshToken(request.getUsername());
 
-        // builds Response Dto
-        SigninResponse response = SigninResponse.builder().accessToken(accessToken).refreshToken(refreshToken).tokenType(TokenType.BEARER).build();
+        // Build Signin Response
+        SigninResponse response = SigninResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .tokenType(TokenType.BEARER)
+                .build();
 
-        return ResponseEntity.ok(response);
+        // Wrap in ApiResponse
+        return ResponseEntity.ok(
+                ApiResponse.<SigninResponse>builder()
+                        .success(true)
+                        .message("User signed in successfully")
+                        .data(response)
+                        .build()
+        );
     }
 
     @PostMapping("/refresh")
-    public ResponseEntity<SigninResponse> refresh(@RequestBody Map<String, String> request) {
+    public ResponseEntity<ApiResponse<SigninResponse>> refresh(@RequestBody Map<String, String> request) {
 
-        // get the refreshtoken from the request
+        // Get Refresh-token from the request
         String refreshToken = request.get("refreshToken");
 
-        // validate refresh token; if valid issue a new access token; otherwise return 400 bad request
+        // Validate refresh token; If valid issue a new access token; Otherwise return 400 bad request
         return refreshTokenService.findByToken(refreshToken)
                 .filter(token -> !refreshTokenService.isTokenExpired(token))
                 .map(token -> {
                     String newAccessToken = jwtTokenProvider.generateAccessToken(token.getUser().getUsername());
+                    SigninResponse response = SigninResponse.builder()
+                            .accessToken(newAccessToken)
+                            .refreshToken(refreshToken)
+                            .tokenType(TokenType.BEARER)
+                            .build();
+
                     return ResponseEntity.ok(
-                            new SigninResponse(newAccessToken, refreshToken, TokenType.BEARER)
+                            ApiResponse.<SigninResponse>builder()
+                                    .success(true)
+                                    .message("Successfully refreshed access token")
+                                    .data(response)
+                                    .build()
                     );
                 })
-                .orElse(ResponseEntity.badRequest().build());
+                .orElseGet(() -> ResponseEntity.badRequest().body(
+                        ApiResponse.<SigninResponse>builder()
+                                .success(false)
+                                .message("Invalid or expired refresh token")
+                                .data(null) // explicitly null
+                                .build()
+                ));
     }
 }
