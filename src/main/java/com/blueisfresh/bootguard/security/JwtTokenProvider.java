@@ -1,10 +1,10 @@
 package com.blueisfresh.bootguard.security;
 
+import io.jsonwebtoken.*;
 import org.springframework.stereotype.Component;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
-import io.jsonwebtoken.JwtException;
+
+import javax.xml.bind.DatatypeConverter;
 
 import java.security.Key;
 import java.util.Date;
@@ -29,9 +29,12 @@ public class JwtTokenProvider {
     private final long refreshTokenExpirationInMs;
 
     public JwtTokenProvider(JwtProperties properties) {
-        this.jwtSecret = Keys.hmacShaKeyFor(properties.getSecret().getBytes());
+        this.jwtSecret = Keys.hmacShaKeyFor(DatatypeConverter.parseHexBinary(properties.getSecret()));
         this.jwtExpirationInMs = properties.getExpirationMilliseconds();
         this.refreshTokenExpirationInMs = properties.getRefreshTokenExpirationMilliseconds();
+
+        System.out.println("DEBUG: jwtExpirationInMs = " + this.jwtExpirationInMs);
+        System.out.println("DEBUG: refreshTokenExpirationInMs = " + this.refreshTokenExpirationInMs);
     }
 
     /**
@@ -81,8 +84,17 @@ public class JwtTokenProvider {
         try {
             Jwts.parserBuilder().setSigningKey(jwtSecret).build().parseClaimsJws(token);
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
-            return false;
+        } catch (SecurityException e) {
+            System.out.println("Invalid JWT signature: " + e.getMessage());
+        } catch (MalformedJwtException e) {
+            System.out.println("Invalid JWT token: " + e.getMessage());
+        } catch (ExpiredJwtException e) {
+            System.out.println("JWT token is expired: " + e.getMessage());
+        } catch (UnsupportedJwtException e) {
+            System.out.println("JWT token is unsupported: " + e.getMessage());
+        } catch (IllegalArgumentException e) {
+            System.out.println("JWT claims string is empty: " + e.getMessage());
         }
+        return false;
     }
 }

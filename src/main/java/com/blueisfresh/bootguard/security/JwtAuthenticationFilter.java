@@ -42,19 +42,29 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         String header = request.getHeader("Authorization");
+        System.out.println("DEBUG: Authorization header = " + header);
+
         if (header != null && header.startsWith("Bearer ")) {
             String token = header.substring(7);
+            System.out.println("DEBUG: Extracted token = " + token);
 
             if (jwtTokenProvider.validateToken(token)) {
                 String username = jwtTokenProvider.getUsernameFromToken(token);
+                System.out.println("DEBUG: Token valid, username = " + username);
+
                 UserDetails userDetails = userDetailsService.loadUserByUsername(username);
+                System.out.println("DEBUG: UserDetails authorities = " + userDetails.getAuthorities());
 
                 UsernamePasswordAuthenticationToken authentication =
                         new UsernamePasswordAuthenticationToken(
                                 userDetails, null, userDetails.getAuthorities());
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
+            } else {
+                System.out.println("DEBUG: Token invalid");
             }
+        } else {
+            System.out.println("DEBUG: No Authorization header or wrong format");
         }
 
         filterChain.doFilter(request, response);
