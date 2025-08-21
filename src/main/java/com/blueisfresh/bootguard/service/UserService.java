@@ -2,11 +2,14 @@ package com.blueisfresh.bootguard.service;
 
 import com.blueisfresh.bootguard.dto.UserDto;
 import com.blueisfresh.bootguard.dto.request.SignupRequest;
+import com.blueisfresh.bootguard.entity.Role;
 import com.blueisfresh.bootguard.entity.User;
 import com.blueisfresh.bootguard.exception.EmailAlreadyExistsException;
 import com.blueisfresh.bootguard.exception.UsernameAlreadyExistsException;
 import com.blueisfresh.bootguard.mapper.UserMapper;
+import com.blueisfresh.bootguard.repository.RoleRepository;
 import com.blueisfresh.bootguard.repository.UserRepository;
+import com.blueisfresh.bootguard.user.RoleName;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,6 +29,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final UserMapper userMapper;
+    private final RoleRepository roleRepository;
 
     // Helper Method for validation
     private void validateUniqueUser(String username, String email) {
@@ -83,6 +87,11 @@ public class UserService {
         newUser.setEmail(request.getEmail());
         newUser.setPasswordHash(passwordEncoder.encode(request.getPassword()));
         newUser.setDisplayName(request.getDisplayName());
+
+        // Assign default role
+        Role userRole = roleRepository.findByName(RoleName.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Default role not found"));
+        newUser.getRoles().add(userRole);
 
         // save with repository
         userRepository.save(newUser);
