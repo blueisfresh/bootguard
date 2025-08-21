@@ -1,6 +1,6 @@
 # BootGuard 🛡️
 
-A **Spring Boot 3** template for building secure REST APIs with **JWT authentication**, **role-based authorization**, **refresh tokens**, **Liquibase migrations**, and **OpenAPI/Swagger documentation**.
+A **Spring Boot 3** template for building secure REST APIs with **JWT authentication**, **role-based authorization**, **refresh tokens**, **Liquibase migrations**, and **custom API documentation (in progress)**.
 
 This project is designed as a **starter kit** for quickly bootstrapping production-ready APIs.
 
@@ -16,7 +16,8 @@ This project is designed as a **starter kit** for quickly bootstrapping producti
 - Consistent API responses (`ApiResponse<T>`)
 - Request/Response logging
 - CORS configuration
-- OpenAPI/Swagger UI (`/swagger-ui.html`)
+- ❌ Swagger/OpenAPI removed (incompatible with Spring Boot 3.5)
+- 📝 Custom API documentation implementation (work in progress)
 
 ---
 
@@ -32,7 +33,7 @@ cd bootguard
 Profiles are managed in `application.properties`:
 
 - **Dev (SQLite)** → default, no setup needed.
-    - If you want a clean DB, delete the `resources/db` folder.
+  - If you want a clean DB, delete the `resources/db` folder.
 - **Prod (Postgres)** → configure in `application-prod.properties`.
 
 Switch profiles:
@@ -62,9 +63,6 @@ app.cors.allowed-origins=http://localhost:3000,http://localhost:4200
 ```bash
 ./mvnw spring-boot:run
 ```
-
-### 6. Access Swagger UI
-Open [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
 
 ---
 
@@ -116,11 +114,12 @@ sequenceDiagram
 ## 📂 Project Structure
 ```
 src/main/java/com/blueisfresh/bootguard
- ├── config/        # Security, CORS, OpenAPI config
+ ├── config/        # Security, CORS config
  ├── controller/    # REST controllers
  ├── dto/           # DTOs (requests, responses)
  ├── entity/        # JPA entities
  ├── exception/     # Custom exceptions + global handler
+ ├── log/           # Logging filter + response wrapper
  ├── mapper/        # MapStruct mappers
  ├── repository/    # Spring Data JPA repositories
  ├── security/      # JWT, filters, services
@@ -158,12 +157,5 @@ src/main/java/com/blueisfresh/bootguard
 ---
 
 ## 📖 Documentation
-- Swagger UI: [http://localhost:8080/swagger-ui.html](http://localhost:8080/swagger-ui.html)
-- OpenAPI JSON: [http://localhost:8080/v3/api-docs](http://localhost:8080/v3/api-docs)
-
----
-
-## 📝 TODO
-- [ ] Add Javadoc to each file (controllers, services, entities, mappers).
-- [ ] Add integration tests for `/auth/signup`, `/auth/signin`, `/auth/refresh`, `/users/me`.
-- [ ] Extend README with deployment instructions (Docker, Kubernetes, etc.).
+- ❌ Swagger/OpenAPI support has been removed due to **compatibility issues with Spring Boot 3.5**.
+- 📝 I’m currently working on a **custom API documentation implementation** that will replace Swagger.
