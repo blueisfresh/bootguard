@@ -28,6 +28,10 @@ public class JwtTokenProvider {
     private final long jwtExpirationInMs;
     private final long refreshTokenExpirationInMs;
 
+    public long getRefreshTokenExpirationInMs() {
+        return refreshTokenExpirationInMs;
+    }
+
     public JwtTokenProvider(JwtProperties properties) {
         this.jwtSecret = Keys.hmacShaKeyFor(DatatypeConverter.parseHexBinary(properties.getSecret()));
         this.jwtExpirationInMs = properties.getExpirationMilliseconds();

@@ -33,7 +33,6 @@ public class RefreshTokenService {
      */
     public RefreshToken createRefreshToken(User user, long durationMs) {
         RefreshToken refreshToken = RefreshToken.builder()
-                .id(UUID.randomUUID())
                 .user(user)
                 .token(UUID.randomUUID().toString())
                 .expiryDate(Instant.now().plusMillis(durationMs))

@@ -6,6 +6,9 @@ import com.blueisfresh.bootguard.dto.request.SignupRequest;
 import com.blueisfresh.bootguard.dto.response.ApiResponse;
 import com.blueisfresh.bootguard.dto.response.SigninResponse;
 import com.blueisfresh.bootguard.dto.response.SignupResponse;
+import com.blueisfresh.bootguard.entity.RefreshToken;
+import com.blueisfresh.bootguard.entity.User;
+import com.blueisfresh.bootguard.repository.UserRepository;
 import com.blueisfresh.bootguard.security.JwtTokenProvider;
 import com.blueisfresh.bootguard.security.RefreshTokenService;
 import com.blueisfresh.bootguard.security.TokenType;
@@ -33,6 +36,7 @@ public class AuthController {
     private final UserService userService;
     private final JwtTokenProvider jwtTokenProvider;
     private final RefreshTokenService refreshTokenService;
+    private final UserRepository userRepository;
 
     @PostMapping("/signup")
     public ResponseEntity<ApiResponse<SignupResponse>> signup(@Valid @RequestBody SignupRequest request) {
@@ -64,14 +68,24 @@ public class AuthController {
         );
         SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        // Generate tokens
+        // Generate access token
         String accessToken = jwtTokenProvider.generateAccessToken(request.getUsername());
-        String refreshToken = jwtTokenProvider.generateRefreshToken(request.getUsername());
+
+        // Fetch user entity
+        UserDto userDto = userService.getUserByUsername(request.getUsername());
+        User userEntity = userRepository.findById(userDto.getId())
+                .orElseThrow(() -> new RuntimeException("User not found"));
+
+        // Create and persist refresh token in DB
+        RefreshToken refreshToken = refreshTokenService.createRefreshToken(
+                userEntity,
+                jwtTokenProvider.getRefreshTokenExpirationInMs()
+        );
 
         // Build Signin Response
         SigninResponse response = SigninResponse.builder()
                 .accessToken(accessToken)
-                .refreshToken(refreshToken)
+                .refreshToken(refreshToken.getToken())
                 .tokenType(TokenType.BEARER)
                 .build();
 
@@ -85,6 +99,7 @@ public class AuthController {
         );
     }
 
+    // TODO: refreshtoken request dto
     @PostMapping("/refresh")
     public ResponseEntity<ApiResponse<SigninResponse>> refresh(@RequestBody Map<String, String> request) {
 
@@ -98,7 +113,7 @@ public class AuthController {
                     String newAccessToken = jwtTokenProvider.generateAccessToken(token.getUser().getUsername());
                     SigninResponse response = SigninResponse.builder()
                             .accessToken(newAccessToken)
-                            .refreshToken(refreshToken)
+                            .refreshToken(refreshToken) // reuse same refresh token
                             .tokenType(TokenType.BEARER)
                             .build();
 
@@ -114,7 +129,7 @@ public class AuthController {
                         ApiResponse.<SigninResponse>builder()
                                 .success(false)
                                 .message("Invalid or expired refresh token")
-                                .data(null) // explicitly null
+                                .data(null)
                                 .build()
                 ));
     }
