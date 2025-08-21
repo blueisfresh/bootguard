@@ -14,6 +14,7 @@ import java.util.List;
  * Global CORS configuration.
  * Reads allowed origins from application.properties.
  */
+
 @Configuration
 public class CorsConfig {
 

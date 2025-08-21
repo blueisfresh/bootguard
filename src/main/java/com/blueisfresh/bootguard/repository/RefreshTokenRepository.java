@@ -10,7 +10,11 @@ import java.util.UUID;
 /**
  * Repository for managing {@link com.blueisfresh.bootguard.entity.RefreshToken} entities.
  * <p>
- * Provides methods for finding and deleting refresh tokens.
+ * Provides methods for:
+ * <ul>
+ *   <li>Finding refresh tokens by their token string.</li>
+ *   <li>Deleting all refresh tokens belonging to a specific user (e.g., on logout).</li>
+ * </ul>
  */
 
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, UUID> {

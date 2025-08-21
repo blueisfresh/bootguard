@@ -9,6 +9,19 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * REST controller for managing user-related operations.
+ * <p>
+ * Responsibilities:
+ * <ul>
+ *   <li>Retrieve the currently authenticated user's profile.</li>
+ *   <li>Retrieve a user by username.</li>
+ *   <li>Update the currently authenticated user's profile.</li>
+ * </ul>
+ * <p>
+ * All responses are wrapped in {@link ApiResponse} for consistency.
+ */
+
 @RestController
 @RequestMapping("/api/users")
 @RequiredArgsConstructor

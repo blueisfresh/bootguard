@@ -10,8 +10,10 @@ import java.util.UUID;
 /**
  * Entity representing a refresh token.
  * <p>
- * Stores the token string, expiry date, and the associated user.
- * Used to issue new access tokens without requiring re-login.
+ * Each refresh token is a random UUID string stored in the database and linked to a user.
+ * It has an expiry date and can be used to issue new access tokens without requiring re-login.
+ * <p>
+ * Unlike access tokens (JWTs), refresh tokens are opaque and validated against the database.
  */
 
 @Entity

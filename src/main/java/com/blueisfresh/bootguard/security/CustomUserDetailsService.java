@@ -18,9 +18,15 @@ import java.util.stream.Collectors;
  * <p>
  * Loads user details from the database and adapts them into Spring Security's
  * {@link org.springframework.security.core.userdetails.UserDetails}.
+ * <p>
+ * Responsibilities:
+ * <ul>
+ *   <li>Look up a user by username.</li>
+ *   <li>Map user roles to Spring Security {@link org.springframework.security.core.GrantedAuthority} objects.</li>
+ *   <li>Provide user credentials and authorities to Spring Security for authentication.</li>
+ * </ul>
  */
 
-// TODO: Update the JavaDoc here
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {

@@ -15,11 +15,13 @@ import java.util.UUID;
  * <p>
  * Responsibilities:
  * <ul>
- *   <li>Create a new refresh token for a user.</li>
+ *   <li>Create and persist a new refresh token (random UUID) for a user.</li>
  *   <li>Find a refresh token by its string value.</li>
  *   <li>Check if a refresh token is expired.</li>
- *   <li>Delete refresh tokens for a user (e.g., on logout).</li>
+ *   <li>Delete all refresh tokens for a user (e.g., on logout).</li>
  * </ul>
+ * <p>
+ * Refresh tokens are opaque UUIDs stored in the database, not JWTs.
  */
 
 @Service

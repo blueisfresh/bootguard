@@ -9,11 +9,12 @@ import lombok.NoArgsConstructor;
 /**
  * Response DTO returned after a successful user sign-in.
  * <p>
- * Contains the generated access token, refresh token,
- * and the token type (e.g., BEARER).
- * <p>
- * Used by the client to authenticate subsequent requests
- * and to refresh the access token when it expires.
+ * Contains:
+ * <ul>
+ *   <li>{@code accessToken} → short-lived JWT used for authenticated requests.</li>
+ *   <li>{@code refreshToken} → opaque UUID string stored in the database, used to obtain new access tokens.</li>
+ *   <li>{@code tokenType} → currently always {@code BEARER}.</li>
+ * </ul>
  */
 
 @Data

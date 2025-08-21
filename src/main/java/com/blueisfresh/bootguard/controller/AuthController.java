@@ -27,6 +27,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
+/**
+ * Authentication controller handling signup, signin, and token refresh.
+ * <p>
+ * Responsibilities:
+ * <ul>
+ *   <li>Signup: Registers a new user with default role {@code ROLE_USER}.</li>
+ *   <li>Signin: Authenticates user credentials, issues a short-lived JWT access token
+ *       and a long-lived refresh token stored in the database.</li>
+ *   <li>Refresh: Validates a refresh token from the database and issues a new access token.</li>
+ * </ul>
+ * <p>
+ * Access token = JWT (stateless, short-lived).<br>
+ * Refresh token = Random UUID stored in {@code refresh_tokens} table.
+ */
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor

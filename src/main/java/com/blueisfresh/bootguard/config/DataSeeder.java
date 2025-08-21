@@ -9,6 +9,16 @@ import org.springframework.context.annotation.Configuration;
 
 import java.util.ArrayList;
 
+/**
+ * Configuration class responsible for seeding initial data into the database.
+ * <p>
+ * Specifically, this ensures that the default roles {@code ROLE_USER} and {@code ROLE_ADMIN}
+ * exist in the database when the application starts. If they are missing, they will be created.
+ * <p>
+ * This allows the application to always have the required roles available for user registration
+ * and authorization without requiring manual inserts.
+ */
+
 @Configuration
 public class DataSeeder {
 
