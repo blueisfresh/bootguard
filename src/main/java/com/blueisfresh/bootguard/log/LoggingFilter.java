@@ -9,12 +9,14 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.UUID;
+
+// Logging Filter only handles logging
 
 @Slf4j
 @Component
 public class LoggingFilter extends OncePerRequestFilter {
 
-    // Example Log: ➡️ Incoming request: POST /api/auth/signin or ⬅️ Response: POST /api/auth/signin (45 ms)
     @Override
     protected void doFilterInternal(HttpServletRequest request,
                                     HttpServletResponse response,
@@ -22,11 +24,29 @@ public class LoggingFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
         long startTime = System.currentTimeMillis();
-        log.info("➡️ Incoming request: {} {}", request.getMethod(), request.getRequestURI());
+        String correlationId = UUID.randomUUID().toString();
 
-        filterChain.doFilter(request, response);
+        log.info("[{}] ➡️ Incoming request: {} {}", correlationId, request.getMethod(), request.getRequestURI());
 
-        long duration = System.currentTimeMillis() - startTime;
-        log.info("⬅️ Response: {} {} ({} ms)", request.getMethod(), request.getRequestURI(), duration);
+        // Wrap response to capture status
+        StatusCaptureResponseWrapper responseWrapper = new StatusCaptureResponseWrapper(response);
+
+        try {
+            filterChain.doFilter(request, responseWrapper);
+        } catch (Exception ex) {
+            log.error("[{}] ❌ Exception during request: {} {} - {}",
+                    correlationId, request.getMethod(), request.getRequestURI(), ex.getMessage(), ex);
+            throw ex; // rethrow so GlobalExceptionHandler can handle it
+        } finally {
+            long duration = System.currentTimeMillis() - startTime;
+            int status = responseWrapper.getStatus();
+            if (status >= 400) {
+                log.warn("[{}] ⬅️ Response: {} {} -> {} ({} ms)",
+                        correlationId, request.getMethod(), request.getRequestURI(), status, duration);
+            } else {
+                log.info("[{}] ⬅️ Response: {} {} -> {} ({} ms)",
+                        correlationId, request.getMethod(), request.getRequestURI(), status, duration);
+            }
+        }
     }
 }
