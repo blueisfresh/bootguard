@@ -61,7 +61,8 @@ public class User {
     @Column(name = "description", columnDefinition = "text")
     private String description;
 
-    // TODO: Recommended Profile Picture Url - if null default profile picture
+    @Column(name = "profile_picture_url", length = 2048)
+    private String profilePictureUrl; // If null, use a default profile picture
 
     @CreatedDate // Spring Data JPA Auditing: Automatically sets creation timestamp
     @Column(name = "created_at", nullable = false, updatable = false)
