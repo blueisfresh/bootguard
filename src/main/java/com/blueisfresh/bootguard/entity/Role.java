@@ -1,10 +1,9 @@
 package com.blueisfresh.bootguard.entity;
 
 import com.blueisfresh.bootguard.user.RoleName;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
@@ -37,6 +36,9 @@ public class Role {
     @Column(name = "name", nullable = false, unique = true, length = 50)
     private RoleName name;
 
-    @ManyToMany(mappedBy = "roles")
+    @JsonBackReference
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    @EqualsAndHashCode.Exclude // Prevent ConcurrentModificationException
+    @ToString.Exclude // Prevent ConcurrentModificationException
     private List<User> users = new ArrayList<>();
 }

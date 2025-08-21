@@ -1,5 +1,6 @@
 package com.blueisfresh.bootguard.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
@@ -75,6 +76,7 @@ public class User {
     private List<RefreshToken> refreshTokens = new ArrayList<>();
 
     // Relation to Roles
+    @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_roles",
