@@ -3,10 +3,15 @@ package com.blueisfresh.bootguard.security;
 import com.blueisfresh.bootguard.entity.User;
 import com.blueisfresh.bootguard.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * Custom implementation of Spring Security's {@link org.springframework.security.core.userdetails.UserDetailsService}.
@@ -15,6 +20,7 @@ import org.springframework.stereotype.Service;
  * {@link org.springframework.security.core.userdetails.UserDetails}.
  */
 
+// TODO: Update the JavaDoc here
 @Service
 @RequiredArgsConstructor
 public class CustomUserDetailsService implements UserDetailsService {
@@ -27,13 +33,15 @@ public class CustomUserDetailsService implements UserDetailsService {
                 .orElseThrow(() ->
                         new UsernameNotFoundException("User not found with username: " + username));
 
-        // Convert your User entity into Spring Security's UserDetails
+        // Map roles to authorities
+        Set<GrantedAuthority> authorities = user.getRoles().stream()
+                .map(role -> new SimpleGrantedAuthority(role.getName().name()))
+                .collect(Collectors.toSet());
+
         return org.springframework.security.core.userdetails.User.builder()
                 .username(user.getUsername())
-                .password(user.getPasswordHash()) // must be encoded with BCrypt
-                .authorities(user.getRoles().stream()
-                        .map(role -> role.getName().name())
-                        .toArray(String[]::new))
+                .password(user.getPasswordHash())
+                .authorities(authorities)
                 .build();
     }
 }
