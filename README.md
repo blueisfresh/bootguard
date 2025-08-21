@@ -48,9 +48,9 @@ spring.profiles.active=prod
 
 In `application.properties`:
 ```properties
-jwt.secret=mysupersecurekeythatismorethan32charslong123!
-jwt.expiration.milliseconds=900000
-jwt.refresh-token-expiration.milliseconds=604800000
+jwt.secret=b79d1e4f70c4390025aacc4a21e563272666857ec0a7731cadd20f0adc01e8eb
+jwt.expiration-milliseconds=3600000
+jwt.refresh-token-expiration-milliseconds=604800000
 ```
 
 ### 4. Configure CORS
@@ -111,6 +111,8 @@ sequenceDiagram
 
 ---
 
+[//]: # (TODO: Update Project Structure)
+
 ## 📂 Project Structure
 ```
 src/main/java/com/blueisfresh/bootguard
@@ -159,3 +161,4 @@ src/main/java/com/blueisfresh/bootguard
 ## 📖 Documentation
 - ❌ Swagger/OpenAPI support has been removed due to **compatibility issues with Spring Boot 3.5**.
 - 📝 I’m currently working on a **custom API documentation implementation** that will replace Swagger.
+- ✅ Roles (ROLE_USER, ROLE_ADMIN) are automatically seeded into the database by the DataSeeder on application startup — no manual inserts required.
