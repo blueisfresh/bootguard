@@ -111,12 +111,10 @@ sequenceDiagram
 
 ---
 
-[//]: # (TODO: Update Project Structure)
-
 ## 📂 Project Structure
 ```
 src/main/java/com/blueisfresh/bootguard
- ├── config/        # Security, CORS config
+ ├── config/        # Data Seeder, CORS config
  ├── controller/    # REST controllers
  ├── dto/           # DTOs (requests, responses)
  ├── entity/        # JPA entities
@@ -125,6 +123,8 @@ src/main/java/com/blueisfresh/bootguard
  ├── mapper/        # MapStruct mappers
  ├── repository/    # Spring Data JPA repositories
  ├── security/      # JWT, filters, services
+ ├── user/          # Holds Role Enum
+ ├── util/          # Helper Methods for Auth
  └── service/       # Business logic
 ```
 
