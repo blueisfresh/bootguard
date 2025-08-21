@@ -5,6 +5,12 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DTO for updating user profile information.
+ * <p>
+ * Allows modification of display name and description.
+ */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

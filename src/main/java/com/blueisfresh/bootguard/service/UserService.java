@@ -2,8 +2,6 @@ package com.blueisfresh.bootguard.service;
 
 import com.blueisfresh.bootguard.dto.UserDto;
 import com.blueisfresh.bootguard.dto.request.SignupRequest;
-import com.blueisfresh.bootguard.dto.request.UpdateUserRequest;
-import com.blueisfresh.bootguard.dto.response.SignupResponse;
 import com.blueisfresh.bootguard.entity.User;
 import com.blueisfresh.bootguard.exception.EmailAlreadyExistsException;
 import com.blueisfresh.bootguard.exception.UsernameAlreadyExistsException;
@@ -13,6 +11,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+/**
+ * Service for managing user-related operations.
+ * <p>
+ * Handles user registration, profile updates, and user lookups.
+ * Ensures uniqueness of usernames and emails.
+ */
 
 @Service
 @RequiredArgsConstructor

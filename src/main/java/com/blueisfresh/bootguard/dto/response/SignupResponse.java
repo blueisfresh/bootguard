@@ -7,6 +7,12 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
+/**
+ * Response DTO returned after a successful user registration.
+ * <p>
+ * Contains the new user's ID and username.
+ */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

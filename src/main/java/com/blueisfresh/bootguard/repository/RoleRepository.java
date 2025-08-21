@@ -7,6 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Repository for managing {@link com.blueisfresh.bootguard.entity.Role} entities.
+ * <p>
+ * Provides methods for finding roles by name and checking if roles exist.
+ */
+
 public interface RoleRepository extends JpaRepository<Role, UUID> {
 
     // asign Roles during signup

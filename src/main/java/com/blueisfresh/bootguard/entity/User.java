@@ -15,6 +15,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.Instant;
 import java.util.*;
 
+/**
+ * Entity representing an application user.
+ * <p>
+ * Stores authentication and profile information, including
+ * username, email, password hash, display name, description,
+ * roles, and refresh tokens.
+ */
+
 @Entity
 @Data
 @NoArgsConstructor

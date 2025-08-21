@@ -10,6 +10,13 @@ import org.mapstruct.factory.Mappers;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * MapStruct mapper for converting between {@link com.blueisfresh.bootguard.entity.User}
+ * entities and {@link com.blueisfresh.bootguard.dto.UserDto} objects.
+ * <p>
+ * Handles conversion of roles between enums and string sets.
+ */
+
 @Mapper(componentModel = "spring")
 public interface UserMapper {
 

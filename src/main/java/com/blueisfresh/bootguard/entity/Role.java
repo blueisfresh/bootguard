@@ -12,6 +12,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Entity representing a user role.
+ * <p>
+ * Maps to the {@link com.blueisfresh.bootguard.user.RoleName} enum
+ * and is associated with users via a many-to-many relationship.
+ */
+
 @Entity
 @Data
 @NoArgsConstructor

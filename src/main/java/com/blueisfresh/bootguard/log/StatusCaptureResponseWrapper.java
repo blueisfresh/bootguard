@@ -6,11 +6,9 @@ import jakarta.servlet.http.HttpServletResponseWrapper;
 import java.io.IOException;
 
 /**
- * Wrapper for HttpServletResponse that captures the HTTP status code.
- * Useful for logging filters to know the final response status.
+ * Wrapper for {@link jakarta.servlet.http.HttpServletResponse}
+ * that captures the HTTP status code for logging purposes.
  */
-
-// StatusCaptureResponseWrapper only handles status capturing
 
 public class StatusCaptureResponseWrapper extends HttpServletResponseWrapper {
     private int httpStatus = SC_OK;

@@ -8,6 +8,13 @@ import lombok.NoArgsConstructor;
 import java.util.Set;
 import java.util.UUID;
 
+/**
+ * Data Transfer Object representing a user.
+ * <p>
+ * Used to expose user information to clients without exposing
+ * sensitive fields like password hashes.
+ */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

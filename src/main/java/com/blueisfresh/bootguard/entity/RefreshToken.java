@@ -7,6 +7,13 @@ import org.hibernate.annotations.GenericGenerator;
 import java.time.Instant;
 import java.util.UUID;
 
+/**
+ * Entity representing a refresh token.
+ * <p>
+ * Stores the token string, expiry date, and the associated user.
+ * Used to issue new access tokens without requiring re-login.
+ */
+
 @Entity
 @Data
 @NoArgsConstructor

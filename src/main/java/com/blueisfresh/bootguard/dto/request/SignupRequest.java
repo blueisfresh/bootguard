@@ -7,6 +7,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * DTO for user sign-up requests.
+ * <p>
+ * Contains the required fields for registering a new user:
+ * username, email, password, and display name.
+ */
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

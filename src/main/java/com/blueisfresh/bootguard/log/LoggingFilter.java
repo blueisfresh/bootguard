@@ -11,7 +11,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.UUID;
 
-// Logging Filter only handles logging
+/**
+ * Servlet filter for logging incoming requests and outgoing responses.
+ * <p>
+ * Logs request method, URI, response status, duration, and exceptions.
+ * Each request is tagged with a correlation ID for traceability.
+ */
 
 @Slf4j
 @Component

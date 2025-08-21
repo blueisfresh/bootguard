@@ -6,6 +6,13 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Repository for managing {@link com.blueisfresh.bootguard.entity.User} entities.
+ * <p>
+ * Provides methods for finding users by username, email, or both,
+ * and for checking uniqueness constraints.
+ */
+
 public interface UserRepository extends JpaRepository<User, UUID> {
 
     // for login

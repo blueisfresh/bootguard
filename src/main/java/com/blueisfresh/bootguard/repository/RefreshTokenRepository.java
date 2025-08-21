@@ -7,6 +7,12 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.Optional;
 import java.util.UUID;
 
+/**
+ * Repository for managing {@link com.blueisfresh.bootguard.entity.RefreshToken} entities.
+ * <p>
+ * Provides methods for finding and deleting refresh tokens.
+ */
+
 public interface RefreshTokenRepository extends JpaRepository<RefreshToken, UUID> {
 
     // to validate refresh tokens
