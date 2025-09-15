@@ -18,6 +18,7 @@ This project is designed as a **starter kit** for quickly bootstrapping producti
 - CORS configuration
 - ❌ Swagger/OpenAPI removed (incompatible with Spring Boot 3.5)
 - 📝 Custom API documentation implementation (work in progress)
+- Spring Boot Actuator Health Endpoint
 
 ---
 
@@ -108,6 +109,36 @@ sequenceDiagram
     RT->>JP: generate new access token
     AC-->>C: { newAccessToken, refreshToken }
 ```
+
+---
+
+## 🩺 Health Check Endpoint
+
+Spring Boot Actuator is enabled in this project, providing a built-in **health endpoint** to verify if the application is running.
+
+You can test it by calling:
+
+```bash
+curl http://localhost:8080/actuator/health
+```
+
+✅ Example response:
+
+```json
+{
+  "status": "UP"
+}
+```
+
+- This confirms that your application is healthy and reachable.
+- Additional details (DB connection, disk space, etc.) can be exposed with:
+
+```properties
+management.endpoints.web.exposure.include=*
+management.endpoint.health.show-details=always
+```
+
+That way, you can monitor database status, disk space, and other system components directly from the `/actuator/health` endpoint.
 
 ---
 
